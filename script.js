@@ -3,23 +3,32 @@ var jumping =false;
 const player=document.querySelector("#player");
 var left=false; 
 var right=false;
-var positionX=0;
+var posX=0;
+var posY=0;
+
+function transformplayer()
+{
+    player.style.transform=`translate(${posX}px,${posY}px)`;
+}
+
 function movement()
 {
     //checking if a key is pressed
     document.addEventListener("keydown", function (event) {
     //checking the space key was pressed
-    if (event.code=="Space"&& !jumping)
+    if (!event.repeat && event.code=="Space"&& !jumping)
     {   
         jumping=true;
         console.log("jumped");
         //changing the posistion to indicate jumping
-        player.style.bottom="60px";
+        posY-=60;
+        transformplayer()
         
         //landing after a certian time
         setTimeout(()=>{
-          player.style.bottom="0px"; 
-          jumping=false;
+            posY+=60;
+            transformplayer()           
+            jumping=false;
         },200);
         
     }
@@ -57,13 +66,14 @@ function movement()
     {
         if(right)
         {
-            positionX+=5;
-            player.style.transform=`translateX(${positionX}px)`;
+            posX+=5;
+            transformplayer()
+
         }
         if(left)
         {
-            positionX-=5;
-            player.style.transform=`translateX(${positionX}px)`;
+            posX-=5;
+            transformplayer()
         }
     },16)
 
